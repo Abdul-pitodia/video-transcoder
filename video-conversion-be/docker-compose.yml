@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: my-video-convertor-app-db
+    environment:
+      POSTGRES_USER: $DATABASE_USER_NAME
+      POSTGRES_PASSWORD: $DATABASE_PASSWORD
+      POSTGRES_DB: $DATABASE_NAME
+    ports:
+      - "$DATABASE_PORT:5432"
+    env_file:
+      - .env 
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - backend
+
+  nestjs-app:
+    image: video-transcoder-app:latest
+    container_name: nestjs-app-container
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env 
+    environment:
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+    depends_on:
+      - postgres
+    networks:
+      - backend
+    volumes:
+      - ~/.aws:/root/.aws:ro
+
+volumes:
+  postgres_data:
+
+networks:
+  backend:
+    driver: bridge
