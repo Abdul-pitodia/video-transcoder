@@ -4,8 +4,8 @@
 /build
 
 # typeorm migrations
-/src/db/migrations
-data-source.ts
+# /src/db/migrations
+# data-source.ts
 
 # Logs
 logs

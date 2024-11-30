@@ -33,6 +33,7 @@ services:
       - backend
     volumes:
       - ~/.aws:/root/.aws:ro
+    command: sh -c "./wait-for-it.sh postgres:5432 -- npm run migration:run:prod && node dist/src/main"
 
 volumes:
   postgres_data:
