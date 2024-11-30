@@ -30,7 +30,7 @@ export class VideoStatusService {
     }
   }
 
-  @SqsMessageHandler('video-output-queue', false)
+  @SqsMessageHandler(process.env.AWS_SQS_NAME, false)
   async handleMessage(message: Message) {
     console.log('Message received');
 
