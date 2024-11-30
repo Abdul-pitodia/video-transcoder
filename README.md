@@ -27,16 +27,18 @@ This project is a **Video Transcoding Application** that accepts video uploads, 
    ```
 2. Setup the environment variable file (.env file):
    ```.env
-    AWS_REGION=<region>
-    S3_BUCKET_VIDEO_STORAGE=<bucket-name>
-    S3_BUCKET_VIDEO_OUTPUT=<bucket-name>
-    POSTGRES_HOST=<host>
-    POSTGRES_PORT=<port>
-    POSTGRES_USER=<user>
-    POSTGRES_PASSWORD=<password>
-    POSTGRES_DB=<database>
-    SQS_QUEUE_URL=<queue-url>
-    CORS_ORIGIN=<cors-origin>
+   AWS_REGION=<region>
+   AWS_PROFILE=<profile>
+   AWS_SQS_URL=<queue-url>
+   AWS_SQS_NAME=<queue-name>
+   S3_BUCKET=<bucket-name>
+   OUTPUT_BUCKET=<bucket-name>
+   DATABASE_HOST=<host>
+   DATABASE_PORT=<port>
+   DATABASE_USER_NAME=<user>
+   DATABASE_PASSWORD=<password>
+   DATABASE_NAME=<database>
+   CORS_ORIGIN=<cors-origin>
    ```
 3. Ensure the following external services are set up:
 
