@@ -14,7 +14,7 @@
 
 ### About
 
-This project is a **Video Transcoding Application** that accepts video uploads, processes them using AWS Lambda with FFmpeg, and notifies the user upon completion. It uses a **serverless architecture** integrated with AWS services like ECS fargate, S3, SQS, and RDS (PostgreSQL) for efficient processing and scalability.
+This project is a **Video Transcoding Application** that accepts video uploads, processes them into multiple supported formats like mp4, mkv, webm or hls (live streaming) using AWS Lambda with FFmpeg, and notifies the user upon completion. It uses a **serverless architecture** integrated with AWS services like ECS fargate, S3, SQS, and RDS (PostgreSQL) for efficient processing and scalability.
 
 ---
 
