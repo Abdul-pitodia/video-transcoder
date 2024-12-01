@@ -3,10 +3,12 @@ import {
   Body,
   Controller,
   Get,
+  Header,
   Param,
   ParseFilePipe,
   ParseFilePipeBuilder,
   Post,
+  Res,
   UploadedFile,
   UseInterceptors,
   UsePipes,
@@ -17,14 +19,28 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { UploadRequestDto } from './models/upload-request.dto';
 import { validateOrReject, ValidationError } from 'class-validator';
 import { plainToClass } from 'class-transformer';
+import { Response } from 'express';
+import { VideoFileValidator } from './video-file.validation';
 
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get('fetchStatus')
-  async fetchAllVideoConversionStatus(){
+  async fetchAllVideoConversionStatus() {
     return this.appService.fetchVideoStatusConversionAll();
+  }
+
+  @Get('getVideo/:id')
+  async fetchVideoPresignedUrl(@Param('id') id: string) {
+    return await this.appService.fetchVideoPresignedUrl(id);
+  }
+
+  @Get('getPlaylistFile/:id')
+  @Header('Content-Type', 'application/octet-stream')
+  async fetchPlaylistFileForLiveStreaming(@Param('id') id: string) {
+    const playlistFile = await this.appService.fetchLivestreamingPlaylistFile(id)
+    return playlistFile
   }
 
   @Post('uploadVideo')
@@ -47,12 +63,12 @@ export class AppController {
     @UploadedFile(
       new ParseFilePipeBuilder()
         .addMaxSizeValidator({
-          maxSize: 20000000,
+          maxSize: 30000000,
           message: (size) =>
             `Max video upload limit is of size: ${size / 1000000} bytes`,
         })
-        .addFileTypeValidator({ fileType: 'video/*' })
         .build(),
+        VideoFileValidator
     )
     video: Express.Multer.File,
     @Body() body: any,
@@ -60,10 +76,9 @@ export class AppController {
     const uploadRequestDto = plainToClass(UploadRequestDto, {
       ...body,
     });
-
     try {
       await validateOrReject(uploadRequestDto);
-      await this.appService.uploadVideoToS3(video, uploadRequestDto);
+      return await this.appService.uploadVideoToS3(video, uploadRequestDto);
     } catch (errors) {
       console.error('Validation errors:', errors);
       throw new BadRequestException(errors);

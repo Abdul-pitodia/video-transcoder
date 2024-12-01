@@ -16,7 +16,7 @@ export class VideoDetails {
     uuid: string;
 
     @Column()
-    url: string;
+    key: string;
 
     @Column()
     originalName: string;
@@ -31,4 +31,4 @@ export class VideoDetails {
     status: VideoConversionStatus;
 }
 
-export class VideoDto extends OmitType(VideoDetails, ['id', 'url']){}
+export class VideoDto extends OmitType(VideoDetails, ['id', 'key']){}

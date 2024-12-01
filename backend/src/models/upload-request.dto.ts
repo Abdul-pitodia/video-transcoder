@@ -2,8 +2,8 @@ import { Transform } from 'class-transformer';
 import { IsIn, IsInt } from 'class-validator';
 
 export class UploadRequestDto {
-  @IsIn(['mp4', 'mkv', 'webm'], {
-    message: 'Format must be one of mp4, mkv, or webm.',
+  @IsIn(['mp4', 'mkv', 'webm', 'm3u8'], {
+    message: 'Format must be one of mp4, mkv, m3u8, or webm.',
   })
   format: string;
 

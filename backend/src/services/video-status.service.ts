@@ -46,7 +46,7 @@ export class VideoStatusService {
         },
         {
           status: VideoConversionStatus.COMPLETED,
-          url: `https://${this.appConfigService.videoOutputBucket}.s3.amazonaws.com/${fileKey}`,
+          key: `${fileKey}`,
         },
       );
 
