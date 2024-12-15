@@ -1,16 +1,20 @@
 import { useState } from 'react';
-import { Video } from '../video.model';
+
+type kv = {
+    name: string;
+    value: string
+}
 
 interface props {
-    items: string[];
+    items: kv[];
     extraStyles: string;
     name: string;
-    dropDownValue: string|null;
     onDropDownSelect: (selectedDropDownValue: string) => void;
 }
 
-const Dropdown = ({ items, extraStyles, name, dropDownValue, onDropDownSelect } : props) => {
+const Dropdown = ({ items, extraStyles, name, onDropDownSelect } : props) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [val, setVal] = useState("")
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -55,15 +59,16 @@ const Dropdown = ({ items, extraStyles, name, dropDownValue, onDropDownSelect } 
                         <a
                         href="#"
                         className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                        key={item}
+                        key={item.name}
                         role="menuitem"
                         onClick={() => {
-                            onDropDownSelect(item)
+                            setVal(item.name)
+                            onDropDownSelect(item.value)
                             toggleDropdown()
                             return;
                         }}
                         >
-                            {item}
+                            {item.name}
                         </a>
                     ))}
                 </div>
@@ -71,7 +76,7 @@ const Dropdown = ({ items, extraStyles, name, dropDownValue, onDropDownSelect } 
             )}
         </div>
 
-        <span className='text-slate-800 text-md font-semibold'>{dropDownValue}</span>
+        <span className='text-slate-800 text-md font-semibold'>{val}</span>
     </div>
   );
 };

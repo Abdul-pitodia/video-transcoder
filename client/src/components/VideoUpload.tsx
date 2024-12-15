@@ -2,7 +2,12 @@ import { Video } from "./video.model";
 import VideoInput from "./VideoInput";
 import { useState } from "react";
 
-function VideoUpload() {
+interface Props {
+  forceUpdate: (...args: any[]) => void
+}
+const BASE_URL = import.meta.env.VITE_BASE_URL;
+
+function VideoUpload(props: Props) {
   const [video, setVideo] = useState<Video>({
     format:"mp4",
     resolution: "480",
@@ -30,7 +35,7 @@ function VideoUpload() {
     formData.append("resolution", video.resolution);
 
     try {
-      const response = await fetch("http://localhost:3000/uploadVideo", {
+      const response = await fetch(`${BASE_URL}/uploadVideo`, {
         method: "POST",
         body: formData,
       });
@@ -39,9 +44,7 @@ function VideoUpload() {
         throw new Error(`Error: ${response.statusText}`);
       }
 
-      const data = await response.json();
-
-      console.log("Conversion started successfully:", data);
+      props.forceUpdate()
     } catch (error) {
       console.error("Error starting video conversion:", error);
     }
@@ -54,7 +57,7 @@ function VideoUpload() {
           video={video}
           onVideoPropertyChange={handleVideoPropertyChange}
         />
-        <button onClick={startVideoConversion} className="rounded shadow-md bg-slate-900 h-fit items-center py-2 px-4 text-white">
+        <button onClick={startVideoConversion} className="rounded shadow-md bg-slate-900 h-fit items-center py-2 px-4 text-white" disabled={video.file === null || video.file === undefined}>
           Convert
         </button>
       </div>

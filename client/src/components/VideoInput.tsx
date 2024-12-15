@@ -19,24 +19,22 @@ function VideoInput(props: Props) {
     <>
       <div className="flex flex-col justify-center min-w-1/3 w-3/5 h-full items-start">
         <Dropdown
-          dropDownValue={props.video.resolution}
           onDropDownSelect={(val: string) => {
             props.onVideoPropertyChange({
               resolution: val,
             });
           }}
-          items={["480", "720"]}
+          items={[{name:"480p", value:"480"}, {name:"720p", value:"720"}, {name:"1080p", value:"1080"}]}
           extraStyles="w-1/2"
           name="Choose target resolution"
         />
         <Dropdown
-          dropDownValue={props.video.format}
           onDropDownSelect={(val: string) => {
             props.onVideoPropertyChange({
               format: val,
             });
           }}
-          items={["mkv", "mp4", "webm"]}
+          items={[{name:"Matroska", value:"mkv"}, {name:"MP4", value:"mp4"}, {name:"WEBM", value:"webm"},{name:"Live video stream", value:"m3u8"}]}
           extraStyles="w-1/2"
           name="Choose target format"
         />

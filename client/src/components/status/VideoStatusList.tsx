@@ -9,6 +9,8 @@ export interface VideoStatusProps {
   conversionFormat: string;
   conversionResolution: string;
 }
+const BASE_URL = import.meta.env.VITE_BASE_URL;
+
 
 function VideoStatusList() {
   const [videoStatuses, setVideoStatuses] = useState<VideoStatusProps[]>([]);
@@ -16,23 +18,29 @@ function VideoStatusList() {
   useEffect(() => {
     const fetchVideoStatus = async () => {
       try {
-        const response = await fetch("http://localhost:3000/fetchStatus");
-        console.log(response);
+        const response = await fetch(`${BASE_URL}/fetchStatus`, {
+          method: 'GET',
+          headers: {
+            'Cache-Control': 'no-cache',
+          },
+        })
         
         if (response.ok) {
           const data: VideoStatusProps[] = await response.json();
           setVideoStatuses(data);
         } else {
           console.error("Failed to fetch video status", response.status);
+          throw new Error("API Polling failed");
         }
       } catch (err) {
         console.error("Error fetching video status", err);
+        throw new Error("API Polling failed");
       }
     };
 
     fetchVideoStatus();
 
-    const intervalId = setInterval(() => fetchVideoStatus(), 15000);
+    const intervalId = setInterval(() => fetchVideoStatus().catch(() => intervalId && clearInterval(intervalId)), 3000);
 
     return () => clearInterval(intervalId);
   }, []);
@@ -42,7 +50,7 @@ function VideoStatusList() {
       <div className="min-w-fit max-w-96 mx-auto mt-4 p-2 rounded-lg">
         {
           videoStatuses.map((vs, idx) => (
-            <VideoStatus {...vs} key={vs.uuid+1} idx={idx}/>
+            <VideoStatus {...vs} key={vs.uuid} idx={idx+1}/>
           ))
         }
       </div>
