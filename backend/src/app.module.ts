@@ -26,21 +26,27 @@ import { LoggingInterceptor } from './logging.interceptor';
     }),
     TypeOrmModule.forFeature([VideoDetails]),
     SqsModule.registerAsync({
-      useFactory: (appConfigService: AppConfigService) => ({
-        producers: [],
-        consumers: [
-          {
-            queueUrl: appConfigService.getSqsUrl,
-            name: appConfigService.getSqsName,
-            sqs: new SQSClient({
-              region: appConfigService.awsRegion,
-              credentials: fromIni({
-                profile: appConfigService.awsProfile,
-              }),
+      useFactory: (appConfigService: AppConfigService) => {
+        const sqsConfig = {
+          region: appConfigService.awsRegion,
+          ...(appConfigService.awsProfile && {
+            credentials: fromIni({
+              profile: appConfigService.awsProfile,
             }),
-          },
-        ],
-      }),
+          }),
+        } as { region: string; credentials?: any };
+
+        return {
+          producers: [],
+          consumers: [
+            {
+              queueUrl: appConfigService.getSqsUrl,
+              name: appConfigService.getSqsName,
+              sqs: new SQSClient(sqsConfig),
+            },
+          ],
+        };
+      },
       inject: [AppConfigService],
       imports: [AppModule],
     }),
