@@ -3,25 +3,25 @@ import VideoInput from "./VideoInput";
 import { useState } from "react";
 
 interface Props {
-  forceUpdate: (...args: any[]) => void
+  forceUpdate: (...args: any[]) => void;
 }
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 function VideoUpload(props: Props) {
   const [video, setVideo] = useState<Video>({
-    format:"mp4",
+    format: "mp4",
     resolution: "480",
-    file: null
-  })
+    file: null,
+  });
+
+  const [error, setError] = useState<string|null>(null);
 
   const handleVideoPropertyChange = (newVideo: Partial<Video>) => {
-    setVideo((prevVideo) => (
-      {
-        ...prevVideo,
-        ...newVideo
-      }
-    ))
-  }
+    setVideo((prevVideo) => ({
+      ...prevVideo,
+      ...newVideo,
+    }));
+  };
 
   async function startVideoConversion() {
     if (!video.file || !video.format || !video.resolution) {
@@ -30,8 +30,8 @@ function VideoUpload(props: Props) {
     }
 
     const formData = new FormData();
-    formData.append("file", video.file); 
-    formData.append("format", video.format); 
+    formData.append("file", video.file);
+    formData.append("format", video.format);
     formData.append("resolution", video.resolution);
 
     try {
@@ -41,10 +41,19 @@ function VideoUpload(props: Props) {
       });
 
       if (!response.ok) {
+        const errMsg = await response.json()
+        setError(errMsg?.message);
+        console.log(errMsg);
+        setVideo(oldVideo => ({
+          ...oldVideo,
+          file: null
+        }))
+        
+        setTimeout(() => setError(null), 2000)
         throw new Error(`Error: ${response.statusText}`);
       }
 
-      props.forceUpdate()
+      props.forceUpdate();
     } catch (error) {
       console.error("Error starting video conversion:", error);
     }
@@ -57,9 +66,16 @@ function VideoUpload(props: Props) {
           video={video}
           onVideoPropertyChange={handleVideoPropertyChange}
         />
-        <button onClick={startVideoConversion} className="rounded shadow-md bg-slate-900 h-fit items-center py-2 px-4 text-white" disabled={video.file === null || video.file === undefined}>
+        <button
+          onClick={startVideoConversion}
+          className="rounded shadow-md bg-slate-900 h-fit items-center py-2 px-4 text-white"
+          disabled={
+            video.file === null || video.file === undefined || error !== null
+          }
+        >
           Convert
         </button>
+        {error && <p className="text-center rounded-md text-red-500">There was an error when doing the conversion</p>}
       </div>
     </>
   );

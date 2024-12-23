@@ -10,11 +10,12 @@ interface props {
     extraStyles: string;
     name: string;
     onDropDownSelect: (selectedDropDownValue: string) => void;
+    defaultVal: string|null;
 }
 
-const Dropdown = ({ items, extraStyles, name, onDropDownSelect } : props) => {
+const Dropdown = ({ items, extraStyles, name, onDropDownSelect, defaultVal } : props) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [val, setVal] = useState("")
+  const [val, setVal] = useState(defaultVal)
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);

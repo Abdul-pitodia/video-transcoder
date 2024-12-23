@@ -27,6 +27,7 @@ function VideoInput(props: Props) {
           items={[{name:"480p", value:"480"}, {name:"720p", value:"720"}, {name:"1080p", value:"1080"}]}
           extraStyles="w-1/2"
           name="Choose target resolution"
+          defaultVal={props.video.resolution}
         />
         <Dropdown
           onDropDownSelect={(val: string) => {
@@ -37,6 +38,7 @@ function VideoInput(props: Props) {
           items={[{name:"Matroska", value:"mkv"}, {name:"MP4", value:"mp4"}, {name:"WEBM", value:"webm"},{name:"Live video stream", value:"m3u8"}]}
           extraStyles="w-1/2"
           name="Choose target format"
+          defaultVal={props.video.format}
         />
         <div className="flex gap-2 items-center w-full mr-2">
           <label

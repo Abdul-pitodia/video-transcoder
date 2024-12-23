@@ -6,11 +6,11 @@ const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 function VideoStatus(props: VideoStatusProps) {
   const [showHLSPlayer, setShowHLSPlayer] = useState(false);
-  const [downloadUrl, setDownloadUrl] = useState<string>("");
+  const [downloadUrl, setDownloadUrl] = useState<string>("#");
   
   useEffect(() => {
     fetch(`${BASE_URL}/getVideo/${props.uuid}`).then(res => res.json().then(body => setDownloadUrl(body.url)))
-  }, [props.uuid])
+  })
 
   const handleClose = () => {
     setShowHLSPlayer(false);  // Close the modal
@@ -42,7 +42,7 @@ function VideoStatus(props: VideoStatusProps) {
         </button>}
 
         {props.conversionFormat !== 'm3u8' && 
-        <a href={downloadUrl} className="text-red-700 bg-red-200 border-2 border-red-500 rounded-md py-2 mx-2 w-20 h-7 font-semibold flex items-center justify-center text-sm">
+        <a href={downloadUrl} className="text-red-700 bg-red-200 border-2 border-red-500 rounded-md py-2 mx-2 w-20 h-7 font-semibold flex items-center justify-center text-sm" onClick={(e) => downloadUrl === "#" && e.preventDefault()}>
           {props.conversionResolution}
         </a>
         }
