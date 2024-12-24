@@ -46,8 +46,7 @@ function VideoStatus(props: VideoStatusProps) {
           <a
             href={downloadUrl}
             className="text-red-700 bg-red-200 border-2 border-red-500 rounded-md py-2 mx-2 w-20 h-7 font-semibold flex items-center justify-center text-sm"
-            onClick={(e) => {
-              e.preventDefault();
+            onClick={() => {
               fetch(`${BASE_URL}/getVideo/${props.uuid}`).then(res => res.json().then(body => setDownloadUrl(body.url)))
             }}
           >
