@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import VideoHLSPLayer from "../live-stream/VideoHLSPlayer";
 import { VideoStatusProps } from "./VideoStatusList";
 
