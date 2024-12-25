@@ -9,7 +9,7 @@ function App() {
   return (
     <>
       <div className="container mx-auto p-4 text-center">
-        <p className="font-semibold text-2xl mb-4">Upload any video file to convert to other format or Livestream</p>
+        <p className="font-semibold text-2xl mb-4">{`Upload any video file ${"( <30mb)"} to convert to other format or Livestream`}</p>
         <VideoUpload forceUpdate={setKey}/>
         <VideoStatusList key={key}/>
       </div>
