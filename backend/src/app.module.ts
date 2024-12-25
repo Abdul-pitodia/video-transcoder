@@ -11,8 +11,9 @@ import { SqsModule, SqsService } from '@ssut/nestjs-sqs';
 import { VideoStatusService } from './services/video-status.service';
 import { fromIni } from '@aws-sdk/credential-provider-ini';
 import { SQSClient } from '@aws-sdk/client-sqs';
-import { APP_INTERCEPTOR } from '@nestjs/core';
+import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { LoggingInterceptor } from './logging.interceptor';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 
 @Module({
   imports: [
@@ -50,6 +51,10 @@ import { LoggingInterceptor } from './logging.interceptor';
       inject: [AppConfigService],
       imports: [AppModule],
     }),
+    ThrottlerModule.forRoot([{
+      ttl: 60000,
+      limit: 150,
+    }]),
   ],
   controllers: [AppController],
   providers: [
@@ -59,6 +64,10 @@ import { LoggingInterceptor } from './logging.interceptor';
     {
       provide: APP_INTERCEPTOR,
       useClass: LoggingInterceptor,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
     },
   ],
   exports: [AppConfigService],

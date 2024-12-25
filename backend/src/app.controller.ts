@@ -21,6 +21,7 @@ import { validateOrReject, ValidationError } from 'class-validator';
 import { plainToClass } from 'class-transformer';
 import { Response } from 'express';
 import { VideoFileValidator } from './video-file.validation';
+import { Throttle } from '@nestjs/throttler';
 
 @Controller()
 export class AppController {
@@ -43,6 +44,7 @@ export class AppController {
     return playlistFile
   }
 
+  @Throttle({ default: { limit: 20, ttl: 60000 } })
   @Post('uploadVideo')
   @UsePipes(
     new ValidationPipe({

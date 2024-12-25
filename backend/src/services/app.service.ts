@@ -71,7 +71,7 @@ export class AppService {
         },
       });
 
-      const presignedUrl = await this.getPreSignedUrl(video.key, 60);
+      const presignedUrl = await this.getPreSignedUrl(video.key, 180);
 
       return { url: presignedUrl };
     } catch (err) {
