@@ -11,8 +11,8 @@ function VideoStatus(props: VideoStatusProps) {
   useEffect(() => {
     fetch(`${BASE_URL}/getVideo/${props.uuid}`).then((res) =>
       res.json().then((body) => setDownloadUrl(body.url))
-    );
-  }, [props.uuid]);
+    ).catch(() => setDownloadUrl("#"));
+  }, [props.uuid, props.status]);
 
   const handleClose = () => {
     setShowHLSPlayer(false);
