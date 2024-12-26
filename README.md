@@ -1,6 +1,6 @@
 # Scalable Video Transcoder
 
-![Demo](design/Screen%20Recording%202024-12-25%20at%201.56.03%20PM.gif)
+![Demo](design/ScreenRecording2024-12-25at1.56.03PM-ezgif.com-video-to-gif-converter.gif)
 ![Architecture Overview](design/diagram-export-29-11-2024-6_59_03-am.png)
 
 ## Table of Contents
