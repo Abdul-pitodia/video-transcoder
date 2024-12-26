@@ -1,5 +1,6 @@
 # Scalable Video Transcoder
 
+![Demo](design/Screen%20Recording%202024-12-25%20at%201.56.03%20PM.gif)
 ![Architecture Overview](design/diagram-export-29-11-2024-6_59_03-am.png)
 
 ## Table of Contents
